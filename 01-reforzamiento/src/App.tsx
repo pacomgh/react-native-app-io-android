@@ -1,7 +1,8 @@
 //import { TiposBasicos } from "./typescript/TiposBasicos"
-//import { TiposBasicos } from "./typescript/TiposBasicos"
-import { Funciones } from './typescript/Funciones';
-import { ObjetosLiterales } from './typescript/ObjetosLiterales';
+//import { Funciones } from './typescript/Funciones';
+//import { ObjetosLiterales } from './typescript/ObjetosLiterales';
+//import { Contador } from './components/Contador';
+import { ContadorConHook } from './components/Contador ConHook';
 
 
 const App = () => {
@@ -12,7 +13,9 @@ const App = () => {
       {/*//de esta forma mostramos un componente dentro de otro */}
       {/*<TiposBasicos/>debe tener el nombre del componente*/}
       {/*<ObjetosLiterales/>*/}
-      <Funciones/>
+      {/*<Funciones/>*/}
+      {/*<Contador/>*/}
+      <ContadorConHook/>
     </div>
   )
 }
