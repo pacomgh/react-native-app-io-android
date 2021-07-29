@@ -1,3 +1,4 @@
+import { type } from "os";
 import { useEffect, useReducer } from "react";
 
 interface AuthState{
@@ -14,7 +15,14 @@ const initialState: AuthState = {
     nombre: ''
 }
 
-type AuthAction = { type: 'logout' }
+type LoginPayload = {
+    username: string,
+    nombre: string
+}
+
+type AuthAction = 
+    | { type: 'logout' }
+    | { type: 'login', payload: LoginPayload};
 
 //la accion modifica el state
 const authReducer = (state: AuthState, action: AuthAction): AuthState  =>{//regresa siempre un tipo de estado igual al initialstate
@@ -27,6 +35,19 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState  =>{//regr
                 nombre: ''
             }            
             break;
+        case 'login'://1. implementamos el reducer
+            const { nombre, username } = action.payload;
+            return {
+                validando: false,
+                token: 'ACB123',
+                //nomenclatura desestructurada
+                nombre,
+                username
+                //nomnclatura sin desetructurar
+                //nombre: action.payload.nombre,
+                //username: action.payload.username
+            }
+            break;
     
         default:
             return state;
@@ -38,13 +59,23 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState  =>{//regr
 
 export const Login = () => {
     //desestructuramos con {valor}
-    const [{validando}, dispatch] = useReducer(authReducer, initialState);
+    const [{validando, token, nombre}, dispatch] = useReducer(authReducer, initialState);
     //useeffect
     useEffect(() => {
         setTimeout(() => {
             dispatch({ type: 'logout'});
         }, 1500);
     }, []);
+    //2. regresamos el estado
+    const login = () => {
+        dispatch({
+            type: 'login',
+            payload: {
+                nombre: 'Francisco',
+                username: 'pacomgh'
+            }
+        });
+    }
 
     if (validando) {
         return(//retornamos un jsx, por eso usamos parentesis
@@ -60,23 +91,31 @@ export const Login = () => {
     //reducer es la funcion para retronar un nuevo estado
     return (
         <>
-            <h3>Login</h3>      
+            <h3>Login</h3>    
+            {
+                ( token )
+                ? <div className="alert alert-success">Autenticado como: {nombre}</div>
+                : <div className="alert alert-danger">No auntenticado</div>
+            }        
 
-            <div className="alert alert-danger">
-                No auntenticado
-            </div>       
+            {
+                (token)
+                ? (
+                    <button className="btn btn-danger">
+                        Logout
+                    </button>
+                )
+                : (
+                    <button className="btn btn-primary"
+                    onClick= {login}>
+                        Login
+                    </button>                    
+                )
 
-            <div className="alert alert-success">
-                Autenticado
-            </div>  
+            }
+            
 
-            <button className="btn btn-primary">
-                Login
-            </button>
-
-            <button className="btn btn-danger">
-                Logout
-            </button>
+            
         </>
     )
 }
