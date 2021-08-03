@@ -77,6 +77,10 @@ export const Login = () => {
         });
     }
 
+    const logout = () => {
+        dispatch({ type: 'logout' });
+    }
+
     if (validando) {
         return(//retornamos un jsx, por eso usamos parentesis
             <>{/*usamos un fragmento porque estamos usando dos etiquetas*/}
@@ -101,7 +105,8 @@ export const Login = () => {
             {
                 (token)
                 ? (
-                    <button className="btn btn-danger">
+                    <button className="btn btn-danger"
+                    onClick={logout}>
                         Logout
                     </button>
                 )
